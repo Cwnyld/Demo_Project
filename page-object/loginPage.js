@@ -11,7 +11,6 @@ class LoginPage {
     this.PASSWORD_INPUT ='#password';
     this.LOGIN_BUTTON ='[type="submit"]';
 
-   
     this.TODO_COLUMN_TC1 = page.locator('text="To Do"').locator('..').filter({ hasText: "To Do" });
     this.TASK_TC1 = this.TODO_COLUMN_TC1.locator('text="Implement user authentication"')
     .filter({ hasText: "Implement user authentication"});
@@ -44,17 +43,35 @@ class LoginPage {
 
   }
 
+  async navigate() {
+    await this.page.goto(testdata.url)
+  }
+  
+  async loginToApplication() {
+    await this.page.locator(this.USERNAME_INPUT).fill(testdata.username);
+    await this.page.locator(this.PASSWORD_INPUT).fill(testdata.password);
+    await this.page.locator(this.LOGIN_BUTTON).click()
+  }
+
   async TestCase1() {
     await this.page.locator(this.TODO_COLUMN_TC1)
     await this.page.locator(this.TASK_TC1)
-    await this.page.locator(this.PARENT_TC1) //toBeVisible()
+    await this.page.locator(this.PARENT_TC1)
     await this.page.locator(this.CHILDREN_TC1)
+  }
+
+  async ConfirmTags_TC1() {
+    const texts = ['Feature', 'High Priority']
+    for(let i = 0; i < texts.length; i++) {
+      const element = await this.CHILDREN_TC1.nth(i)
+      await expect(element).toHaveText(texts[i]);
+      await expect(element).toBeVisible();
+    };
   }
 
   async TestCase2() {
     await this.TODO_COLUMN_TC2.locator(this.TODO_COLUMN_TC2)
     await this.TASK_TC2.locator(this.TASK_TC2)
-    //await this.BUG.locator(this.BUG)
     await expect(this.BUG).toBeVisible()
   }
 
@@ -78,6 +95,15 @@ class LoginPage {
     await this.EL_TC5
     await this.ELEMENT_TC5
   }
+  
+  async ConfirmTags_TC5() {
+    const texts = ['Feature', 'High Priority'];
+    for(let i = 0; i < texts.length; i++) {
+      const element = await this.ELEMENT_TC5.nth(i);
+      await expect(element).toHaveText(texts[i]);
+      await expect(element).toBeVisible();
+    }
+  }
 
   async TestCase6() {
     await this.MOBILE_APP_TC4.click()
@@ -86,14 +112,6 @@ class LoginPage {
     await expect(this.DESIGN).toBeVisible()
   }
 
-  async navigate() {
-    await this.page.goto(testdata.url)
-  }
-  
-  async loginToApplication() {
-    await this.page.locator(this.USERNAME_INPUT).fill(testdata.username);
-    await this.page.locator(this.PASSWORD_INPUT).fill(testdata.password);
-    await this.page.locator(this.LOGIN_BUTTON).click()
-  }
+ 
 }
 module.exports = LoginPage;
