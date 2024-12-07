@@ -1,19 +1,14 @@
 const { test, expect } = require('@playwright/test');
-const testdata = JSON.parse(JSON.stringify(require('../testData/login.json')));
 const LoginPage = require("../page-object/loginPage");
-const { execPath } = require('process');
 
 test.describe('Login Automation', () => {
 
   test.beforeEach(async ({page}) => {
-    
-    await page.goto(testdata.url);
-    await expect(page).toHaveURL(testdata.url);
 
-    await page.locator('#username').fill(testdata.username);
-    await page.locator('#password').fill(testdata.password);
-    await page.locator('[type="submit"]').click();
-  })
+    const login = new LoginPage(page);
+      login.navigate();
+      login.loginToApplication();
+  });
 
 
   test('Test Case - 1', async ({ page }) => {
@@ -30,9 +25,9 @@ test.describe('Login Automation', () => {
     const element = await children.nth(i)
     await expect(element).toHaveText(texts[i]);
     await expect(element).toBeVisible();
-  };
+    };
 
-})
+  });
   
   test('Test Case - 2', async ({ page })  => {
 
@@ -69,7 +64,7 @@ test.describe('Login Automation', () => {
 
     await expect(page.locator('div span.px-2').nth(0)).toBeVisible();
 
-   });
+  });
 
    test('Test Case - 5', async({page}) => {
 
@@ -88,9 +83,8 @@ test.describe('Login Automation', () => {
     const element = await children.nth(i);
     await expect(element).toHaveText(texts[i]);
     await expect(element).toBeVisible();
-  }
-  
-});
+    }
+  });
 
    test('Test Case - 6', async ({ page })  => {
 
@@ -104,8 +98,7 @@ test.describe('Login Automation', () => {
     const design = ['Design']
     await expect(page.locator('div span.px-2').getByText(design)).toBeVisible();
 
+  });
 });
-
-})
 
 

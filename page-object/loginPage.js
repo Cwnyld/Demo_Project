@@ -1,3 +1,5 @@
+const testdata = JSON.parse(JSON.stringify(require('../testData/login.json')));
+
 class LoginPage {
 
   constructor(page) {
@@ -6,17 +8,16 @@ class LoginPage {
     this.USERNAME_INPUT='#username';
     this.PASSWORD_INPUT='#password';
     this.LOGIN_BUTTON='[type="submit"]';
-   // this.URL='https://animated-gingersnap-8cf7f2.netlify.app/';
   }
 
-  async navigate(url) {
-    await this.page.goto(this.url)
+  async navigate() {
+    await this.page.goto(testdata.url)
   }
   
   async loginToApplication() {
 
-    await this.page.locator(this.USERNAME_INPUT).fill(username);
-    await this.page.locator(this.PASSWORD_INPUT).fill(password);
+    await this.page.locator(this.USERNAME_INPUT).fill(testdata.username);
+    await this.page.locator(this.PASSWORD_INPUT).fill(testdata.password);
     await this.page.locator(this.LOGIN_BUTTON).click()
   
   }
